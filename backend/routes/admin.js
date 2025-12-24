@@ -14,6 +14,7 @@ router.get('/dashboard', adminController.getDashboardStats);
 // Users management
 router.get('/users', adminController.getAllUsers);
 router.get('/users/:id', adminController.getUserDetails);
+router.delete('/users/:id', adminController.deleteUser);
 router.put('/users/:id/block', [
   body('block').isBoolean().withMessage('Block status required'),
   body('reason').optional().trim()

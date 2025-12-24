@@ -178,6 +178,52 @@ exports.getUserDetails = async (req, res) => {
   }
 };
 
+// Delete user
+exports.deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await User.findByPk(id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    if (user.role === 'admin') {
+      return res.status(403).json({
+        success: false,
+        message: 'Cannot delete admin users'
+      });
+    }
+
+    const userEmail = user.email;
+    await user.destroy();
+
+    // Log activity
+    await ActivityLog.create({
+      userId: req.user.id,
+      action: 'DELETE_USER',
+      description: `Deleted user: ${userEmail}`,
+      entityType: 'User',
+      entityId: id
+    });
+
+    res.json({
+      success: true,
+      message: 'User deleted successfully'
+    });
+  } catch (error) {
+    console.error('Delete user error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to delete user',
+      error: error.message
+    });
+  }
+};
+
 // Block/Unblock user
 exports.toggleBlockUser = async (req, res) => {
   try {
