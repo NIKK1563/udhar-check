@@ -113,11 +113,20 @@ const Users = () => {
     if (!window.confirm(`Are you sure you want to ${action} this user?`)) return;
 
     try {
-      await adminAPI.banUser(userId, { banned: !isBanned });
-      toast.success(`User ${action}ned successfully`);
-      fetchUsers();
+      const response = await adminAPI.banUser(userId, { banned: !isBanned });
+      if (response.data.success) {
+        toast.success(`User ${action}ned successfully`);
+        // Update user in list without refetching
+        setUsers(prevUsers => prevUsers.map(user => 
+          user.id === userId ? { ...user, isBlocked: !isBanned } : user
+        ));
+      } else {
+        toast.error(response.data.message || `Failed to ${action} user`);
+      }
     } catch (error) {
-      toast.error(`Failed to ${action} user`);
+      const errorMessage = error.response?.data?.message || `Failed to ${action} user`;
+      toast.error(errorMessage);
+      console.error('Ban user error:', error);
     }
     setActionMenuId(null);
   };
@@ -126,11 +135,18 @@ const Users = () => {
     if (!window.confirm('Are you sure you want to delete this user? This action cannot be undone.')) return;
 
     try {
-      await adminAPI.deleteUser(userId);
-      toast.success('User deleted successfully');
-      fetchUsers();
+      const response = await adminAPI.deleteUser(userId);
+      if (response.data.success) {
+        toast.success('User deleted successfully');
+        // Remove user from list without refetching
+        setUsers(prevUsers => prevUsers.filter(user => user.id !== userId));
+      } else {
+        toast.error(response.data.message || 'Failed to delete user');
+      }
     } catch (error) {
-      toast.error('Failed to delete user');
+      const errorMessage = error.response?.data?.message || 'Failed to delete user';
+      toast.error(errorMessage);
+      console.error('Delete user error:', error);
     }
     setActionMenuId(null);
   };

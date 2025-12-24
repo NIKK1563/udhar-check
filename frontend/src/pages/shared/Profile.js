@@ -25,6 +25,7 @@ const Profile = () => {
   const [showSelfieModal, setShowSelfieModal] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
   const webcamRef = useRef(null);
+  const [validationErrors, setValidationErrors] = useState({});
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -58,13 +59,58 @@ const Profile = () => {
     return 'score-low';
   };
 
+  // Validate phone number (10 digits only)
+  const validatePhone = (value) => {
+    if (!value) return '';
+    if (!/^\d*$/.test(value)) return 'Only numbers are allowed';
+    if (value.length !== 10) return 'Phone number must be exactly 10 digits';
+    return '';
+  };
+
+  // Validate pincode (6 digits only)
+  const validatePincode = (value) => {
+    if (!value) return '';
+    if (!/^\d*$/.test(value)) return 'Only numbers are allowed';
+    if (value.length !== 6) return 'PIN code must be exactly 6 digits';
+    return '';
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    
+    // Special handling for phone - only allow digits, max 10
+    if (name === 'phone') {
+      const numericValue = value.replace(/\D/g, '').slice(0, 10);
+      setFormData(prev => ({ ...prev, [name]: numericValue }));
+      setValidationErrors(prev => ({ ...prev, phone: validatePhone(numericValue) }));
+      return;
+    }
+    
+    // Special handling for pincode - only allow digits, max 6
+    if (name === 'pincode') {
+      const numericValue = value.replace(/\D/g, '').slice(0, 6);
+      setFormData(prev => ({ ...prev, [name]: numericValue }));
+      setValidationErrors(prev => ({ ...prev, pincode: validatePincode(numericValue) }));
+      return;
+    }
+    
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validate before submit
+    const phoneError = validatePhone(formData.phone);
+    const pincodeError = validatePincode(formData.pincode);
+    
+    if (phoneError || pincodeError) {
+      setValidationErrors({ phone: phoneError, pincode: pincodeError });
+      if (phoneError) toast.error(phoneError);
+      if (pincodeError) toast.error(pincodeError);
+      return;
+    }
+    
     setLoading(true);
 
     try {
@@ -255,11 +301,18 @@ const Profile = () => {
                     <input
                       type="tel"
                       name="phone"
-                      className="form-input"
+                      className={`form-input ${validationErrors.phone ? 'error' : ''}`}
                       value={formData.phone}
                       onChange={handleInputChange}
                       disabled={!editMode}
+                      placeholder="10 digit number"
+                      maxLength={10}
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                     />
+                    {validationErrors.phone && editMode && (
+                      <span className="form-error">{validationErrors.phone}</span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -310,11 +363,18 @@ const Profile = () => {
                     <input
                       type="text"
                       name="pincode"
-                      className="form-input"
+                      className={`form-input ${validationErrors.pincode ? 'error' : ''}`}
                       value={formData.pincode}
                       onChange={handleInputChange}
                       disabled={!editMode}
+                      placeholder="6 digit PIN"
+                      maxLength={6}
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                     />
+                    {validationErrors.pincode && editMode && (
+                      <span className="form-error">{validationErrors.pincode}</span>
+                    )}
                   </div>
                 </div>
               </div>

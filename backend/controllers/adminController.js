@@ -199,9 +199,60 @@ exports.deleteUser = async (req, res) => {
     }
 
     const userEmail = user.email;
+    
+    // Delete related records first to avoid foreign key constraint errors
+    const { Notification, ActivityLog, Report, Dispute, LoanRequest, Repayment } = require('../models/associations');
+    
+    // Delete notifications for this user
+    await Notification.destroy({ where: { userId: id } });
+    
+    // Delete activity logs for this user
+    await ActivityLog.destroy({ where: { userId: id } });
+    
+    // Delete reports filed by or against this user
+    await Report.destroy({ 
+      where: { 
+        [require('sequelize').Op.or]: [
+          { reporterId: id },
+          { reportedUserId: id }
+        ]
+      }
+    });
+    
+    // Handle disputes - set user references to null instead of deleting
+    await Dispute.update(
+      { raisedById: null },
+      { where: { raisedById: id } }
+    );
+    await Dispute.update(
+      { againstUserId: null },
+      { where: { againstUserId: id } }
+    );
+    
+    // Handle repayments - set user references to null
+    await Repayment.update(
+      { borrowerId: null },
+      { where: { borrowerId: id } }
+    );
+    await Repayment.update(
+      { lenderId: null },
+      { where: { lenderId: id } }
+    );
+    
+    // Handle loan requests - set user references to null
+    await LoanRequest.update(
+      { borrowerId: null },
+      { where: { borrowerId: id } }
+    );
+    await LoanRequest.update(
+      { lenderId: null },
+      { where: { lenderId: id } }
+    );
+    
+    // Now delete the user
     await user.destroy();
 
-    // Log activity
+    // Log activity (use admin's ID since user is deleted)
     await ActivityLog.create({
       userId: req.user.id,
       action: 'DELETE_USER',
@@ -218,7 +269,7 @@ exports.deleteUser = async (req, res) => {
     console.error('Delete user error:', error);
     res.status(500).json({
       success: false,
-      message: 'Failed to delete user',
+      message: 'Failed to delete user: ' + error.message,
       error: error.message
     });
   }

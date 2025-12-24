@@ -164,6 +164,22 @@ exports.updateProfile = async (req, res) => {
   try {
     const { firstName, lastName, phone, whatsapp, address, city, state, pincode } = req.body;
 
+    // Validate phone number (10 digits)
+    if (phone && !/^\d{10}$/.test(phone)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Phone number must be exactly 10 digits'
+      });
+    }
+
+    // Validate pincode (6 digits)
+    if (pincode && !/^\d{6}$/.test(pincode)) {
+      return res.status(400).json({
+        success: false,
+        message: 'PIN code must be exactly 6 digits'
+      });
+    }
+
     const user = await User.findByPk(req.user.id);
     
     // Update allowed fields
