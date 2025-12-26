@@ -100,17 +100,46 @@ const Login = () => {
       </form>
 
       {/* Demo Login Buttons */}
-      <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-        <div style={{ marginBottom: '0.5rem', fontWeight: 500 }}>Demo Login</div>
-        <button type="button" className="btn btn-outline" style={{ margin: '0 0.5rem' }} onClick={() => handleDemoLogin('admin')}>
-          Login as Admin
-        </button>
-        <button type="button" className="btn btn-outline" style={{ margin: '0 0.5rem' }} onClick={() => handleDemoLogin('lender')}>
-          Login as Lender
-        </button>
-        <button type="button" className="btn btn-outline" style={{ margin: '0 0.5rem' }} onClick={() => handleDemoLogin('borrower')}>
-          Login as Borrower
-        </button>
+      <div className="demo-login-section">
+        <div className="demo-login-divider">
+          <span>Quick Demo Access</span>
+        </div>
+        <p className="demo-login-subtitle">Explore the platform without registration</p>
+        <div className="demo-login-buttons">
+          <button 
+            type="button" 
+            className="demo-btn demo-btn-admin" 
+            onClick={() => handleDemoLogin('admin')}
+          >
+            <span className="demo-btn-icon">👑</span>
+            <span className="demo-btn-text">
+              <strong>Admin</strong>
+              <small>Manage platform</small>
+            </span>
+          </button>
+          <button 
+            type="button" 
+            className="demo-btn demo-btn-lender" 
+            onClick={() => handleDemoLogin('lender')}
+          >
+            <span className="demo-btn-icon">💰</span>
+            <span className="demo-btn-text">
+              <strong>Lender</strong>
+              <small>Lend money</small>
+            </span>
+          </button>
+          <button 
+            type="button" 
+            className="demo-btn demo-btn-borrower" 
+            onClick={() => handleDemoLogin('borrower')}
+          >
+            <span className="demo-btn-icon">🙋</span>
+            <span className="demo-btn-text">
+              <strong>Borrower</strong>
+              <small>Request loans</small>
+            </span>
+          </button>
+        </div>
       </div>
 
       <p className="auth-footer">

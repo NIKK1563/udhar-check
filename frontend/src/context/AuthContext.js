@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { authAPI } from '../services/api';
+import { demoUsers } from '../services/demoData';
 
 const AuthContext = createContext(null);
 
@@ -82,34 +83,11 @@ export const AuthProvider = ({ children }) => {
 
   // Demo login for frontend-only demo
   const loginDemo = async (role) => {
-    // Dummy users for demo
-    const demoUsers = {
-      admin: {
-        id: 'demo-admin',
-        email: 'admin@demo.com',
-        firstName: 'Admin',
-        lastName: 'User',
-        role: 'admin',
-        isOnboardingComplete: true
-      },
-      lender: {
-        id: 'demo-lender',
-        email: 'lender@demo.com',
-        firstName: 'Lender',
-        lastName: 'User',
-        role: 'lender',
-        isOnboardingComplete: true
-      },
-      borrower: {
-        id: 'demo-borrower',
-        email: 'borrower@demo.com',
-        firstName: 'Borrower',
-        lastName: 'User',
-        role: 'borrower',
-        isOnboardingComplete: true
-      }
-    };
+    // Use enhanced demo users from demoData
     const user = demoUsers[role];
+    if (!user) {
+      throw new Error('Invalid demo role');
+    }
     localStorage.setItem('token', 'demo-token');
     localStorage.setItem('user', JSON.stringify(user));
     setUser(user);

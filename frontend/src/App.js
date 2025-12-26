@@ -31,12 +31,15 @@ import BorrowerNewRequest from './pages/borrower/NewRequest';
 import AdminDashboard from './pages/admin/Dashboard';
 import AdminUsers from './pages/admin/Users';
 import AdminVerifications from './pages/admin/Verifications';
+import AdminLoans from './pages/admin/Loans';
 import AdminReports from './pages/admin/Reports';
+import AdminDisputes from './pages/admin/Disputes';
 import AdminSettings from './pages/admin/Settings';
 
 // Shared Pages
 import Profile from './pages/shared/Profile';
 import Notifications from './pages/shared/Notifications';
+import ReportUser from './pages/shared/ReportUser';
 
 // Loading component
 const Loading = () => (
@@ -205,6 +208,7 @@ function App() {
         <Route path="requests" element={<LenderRequests />} />
         <Route path="history" element={<LenderHistory />} />
         <Route path="loan/:id" element={<LenderLoanDetails />} />
+        <Route path="report/:userId" element={<ReportUser />} />
         <Route path="profile" element={<Profile />} />
         <Route path="notifications" element={<Notifications />} />
       </Route>
@@ -219,6 +223,7 @@ function App() {
         <Route path="new-request" element={<BorrowerNewRequest />} />
         <Route path="my-loans" element={<BorrowerMyLoans />} />
         <Route path="loan/:id" element={<LenderLoanDetails />} />
+        <Route path="report/:userId" element={<ReportUser />} />
         <Route path="profile" element={<Profile />} />
         <Route path="notifications" element={<Notifications />} />
       </Route>
@@ -232,7 +237,9 @@ function App() {
         <Route index element={<AdminDashboard />} />
         <Route path="users" element={<AdminUsers />} />
         <Route path="verifications" element={<AdminVerifications />} />
+        <Route path="loans" element={<AdminLoans />} />
         <Route path="reports" element={<AdminReports />} />
+        <Route path="disputes" element={<AdminDisputes />} />
         <Route path="settings" element={<AdminSettings />} />
         <Route path="profile" element={<Profile />} />
         <Route path="notifications" element={<Notifications />} />

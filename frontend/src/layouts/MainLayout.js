@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { notificationsAPI } from '../services/api';
+import { notificationsAPI, adminAPI } from '../services/api';
+import { isDemoMode } from '../services/demoData';
 import { 
   FiHome, FiList, FiPlusCircle, FiUsers, FiFileText, 
   FiAlertCircle, FiSettings, FiBell, FiUser, FiLogOut, FiMenu, FiX, FiUserCheck 
@@ -14,18 +15,32 @@ const MainLayout = () => {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [pendingVerificationsCount, setPendingVerificationsCount] = useState(0);
+  const [pendingReportsCount, setPendingReportsCount] = useState(0);
+  const [pendingDisputesCount, setPendingDisputesCount] = useState(0);
 
   useEffect(() => {
     fetchUnreadCount();
+    if (user?.role === 'admin') {
+      fetchAllAdminCounts();
+    }
     // Poll for notifications every 30 seconds
-    const interval = setInterval(fetchUnreadCount, 30000);
+    const interval = setInterval(() => {
+      fetchUnreadCount();
+      if (user?.role === 'admin') {
+        fetchAllAdminCounts();
+      }
+    }, 30000);
     return () => clearInterval(interval);
-  }, []);
+  }, [user?.role]);
 
-  // Refresh unread count when navigating
+  // Refresh counts when navigating
   useEffect(() => {
     fetchUnreadCount();
-  }, [location.pathname]);
+    if (user?.role === 'admin') {
+      fetchAllAdminCounts();
+    }
+  }, [location.pathname, user?.role]);
 
   const fetchUnreadCount = async () => {
     try {
@@ -33,6 +48,21 @@ const MainLayout = () => {
       setUnreadCount(response.data.data.count);
     } catch (error) {
       console.error('Failed to fetch unread count:', error);
+    }
+  };
+
+  const fetchAllAdminCounts = async () => {
+    try {
+      const [verificationsRes, reportsRes, disputesRes] = await Promise.all([
+        adminAPI.getPendingVerificationsCount(),
+        adminAPI.getPendingReportsCount(),
+        adminAPI.getPendingDisputesCount()
+      ]);
+      setPendingVerificationsCount(verificationsRes.data.data.count);
+      setPendingReportsCount(reportsRes.data.data.count);
+      setPendingDisputesCount(disputesRes.data.data.count);
+    } catch (error) {
+      console.error('Failed to fetch admin counts:', error);
     }
   };
 
@@ -64,10 +94,10 @@ const MainLayout = () => {
       return [
         { path: basePath, icon: FiHome, label: 'Dashboard', exact: true },
         { path: `${basePath}/users`, icon: FiUsers, label: 'Users' },
-        { path: `${basePath}/verifications`, icon: FiUserCheck, label: 'Verifications' },
+        { path: `${basePath}/verifications`, icon: FiUserCheck, label: 'Verifications', badge: pendingVerificationsCount },
         { path: `${basePath}/loans`, icon: FiFileText, label: 'Loans' },
-        { path: `${basePath}/reports`, icon: FiAlertCircle, label: 'Reports' },
-        { path: `${basePath}/disputes`, icon: FiFileText, label: 'Disputes' },
+        { path: `${basePath}/reports`, icon: FiAlertCircle, label: 'Reports', badge: pendingReportsCount },
+        { path: `${basePath}/disputes`, icon: FiFileText, label: 'Disputes', badge: pendingDisputesCount },
         { path: `${basePath}/settings`, icon: FiSettings, label: 'Settings' }
       ];
     }
@@ -118,6 +148,9 @@ const MainLayout = () => {
             >
               <item.icon size={20} />
               <span>{item.label}</span>
+              {item.badge !== undefined && item.badge > 0 && (
+                <span className="nav-badge">{item.badge}</span>
+              )}
             </NavLink>
           ))}
         </nav>
@@ -166,6 +199,12 @@ const MainLayout = () => {
 
       {/* Main Content */}
       <main className="main-content">
+        {/* Demo Mode Banner */}
+        {isDemoMode() && (
+          <div className="demo-mode-banner">
+            <span>🎭 Demo Mode</span> - You're viewing sample data. Login with real credentials to use the full platform.
+          </div>
+        )}
         <Outlet />
       </main>
     </div>
