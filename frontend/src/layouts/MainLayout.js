@@ -56,7 +56,7 @@ const MainLayout = () => {
       return [
         { path: basePath, icon: FiHome, label: 'Dashboard', exact: true },
         { path: `${basePath}/new-request`, icon: FiPlusCircle, label: 'New Request' },
-        { path: `${basePath}/requests`, icon: FiList, label: 'My Requests' }
+        { path: `${basePath}/my-loans`, icon: FiList, label: 'My Requests' }
       ];
     }
     

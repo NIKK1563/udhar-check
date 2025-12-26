@@ -45,7 +45,14 @@ export const authAPI = {
   changePassword: (data) => api.post('/auth/change-password', data),
   completeOnboarding: (formData) => api.post('/auth/onboarding', formData, {
     headers: { 'Content-Type': 'multipart/form-data' }
-  })
+  }),
+  uploadProfilePicture: (formData) => api.post('/auth/profile-picture', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }),
+  sendEmailVerification: () => api.post('/auth/send-email-verification'),
+  verifyEmail: (data) => api.post('/auth/verify-email', data),
+  sendPhoneVerification: () => api.post('/auth/send-phone-verification'),
+  verifyPhone: (data) => api.post('/auth/verify-phone', data)
 };
 
 // Loans API
@@ -73,7 +80,9 @@ export const reportsAPI = {
   create: (formData) => api.post('/reports', formData, {
     headers: { 'Content-Type': 'multipart/form-data' }
   }),
-  getMyReports: (params) => api.get('/reports/my-reports', { params })
+  getMyReports: (params) => api.get('/reports/my-reports', { params }),
+  getAll: (params) => api.get('/admin/reports', { params }),
+  resolve: (id, data) => api.put(`/admin/reports/${id}`, data)
 };
 
 // Disputes API
@@ -84,7 +93,9 @@ export const disputesAPI = {
   getMyDisputes: (params) => api.get('/disputes/my-disputes', { params }),
   addNote: (id, formData) => api.post(`/disputes/${id}/note`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' }
-  })
+  }),
+  getAll: (params) => api.get('/admin/disputes', { params }),
+  resolve: (id, data) => api.put(`/admin/disputes/${id}`, data)
 };
 
 // Notifications API

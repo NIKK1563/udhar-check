@@ -21,6 +21,7 @@ import LenderLoanDetails from './pages/lender/LoanDetails';
 // Borrower Pages
 import BorrowerDashboard from './pages/borrower/Dashboard';
 import BorrowerMyLoans from './pages/borrower/MyLoans';
+import BorrowerNewRequest from './pages/borrower/NewRequest';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/Dashboard';
@@ -210,6 +211,7 @@ function App() {
         </ProtectedRoute>
       }>
         <Route index element={<BorrowerDashboard />} />
+        <Route path="new-request" element={<BorrowerNewRequest />} />
         <Route path="my-loans" element={<BorrowerMyLoans />} />
         <Route path="loan/:id" element={<LenderLoanDetails />} />
         <Route path="profile" element={<Profile />} />

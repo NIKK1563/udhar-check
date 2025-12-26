@@ -74,9 +74,22 @@ const AdminDashboard = () => {
         adminAPI.getDisputes({ status: 'open', limit: 5 })
       ]);
 
-      setStats(statsRes.data.data || {});
+      // Backend returns data.data.stats
+      const statsData = statsRes.data.data?.stats || {};
+      setStats({
+        totalUsers: statsData.totalUsers || 0,
+        totalLenders: statsData.totalLenders || 0,
+        totalBorrowers: statsData.totalBorrowers || 0,
+        totalLoans: (statsData.activeLoans || 0) + (statsData.completedLoans || 0),
+        activeLoans: statsData.activeLoans || 0,
+        completedLoans: statsData.completedLoans || 0,
+        defaultedLoans: statsData.defaultedLoans || 0,
+        totalLentAmount: statsData.totalLentAmount || 0,
+        pendingReports: statsData.pendingReports || 0,
+        openDisputes: statsData.openDisputes || 0
+      });
       setRecentUsers(usersRes.data.data?.users || []);
-      setRecentLoans(loansRes.data.data?.loans || []);
+      setRecentLoans(loansRes.data.data?.loans || statsRes.data.data?.recentLoans || []);
     } catch (error) {
       console.error('Failed to fetch dashboard data:', error);
       toast.error('Failed to load dashboard data');

@@ -3,7 +3,7 @@ const router = express.Router();
 const { body } = require('express-validator');
 const authController = require('../controllers/authController');
 const { verifyToken } = require('../middleware/auth');
-const { uploadOnboarding, handleUploadError } = require('../middleware/upload');
+const { uploadOnboarding, uploadProfile, handleUploadError } = require('../middleware/upload');
 const validate = require('../middleware/validate');
 
 // Validation rules
@@ -40,6 +40,26 @@ router.post('/onboarding',
   handleUploadError,
   authController.completeOnboarding
 );
+
+// Profile picture upload
+router.post('/profile-picture',
+  verifyToken,
+  uploadProfile,
+  handleUploadError,
+  authController.uploadProfilePicture
+);
+
+// Email verification
+router.post('/send-email-verification', verifyToken, authController.sendEmailVerification);
+router.post('/verify-email', verifyToken, [
+  body('code').isLength({ min: 6, max: 6 }).withMessage('Verification code must be 6 digits')
+], validate, authController.verifyEmail);
+
+// Phone verification
+router.post('/send-phone-verification', verifyToken, authController.sendPhoneVerification);
+router.post('/verify-phone', verifyToken, [
+  body('code').isLength({ min: 6, max: 6 }).withMessage('Verification code must be 6 digits')
+], validate, authController.verifyPhone);
 
 // Admin only - create admin
 router.post('/create-admin', verifyToken, [

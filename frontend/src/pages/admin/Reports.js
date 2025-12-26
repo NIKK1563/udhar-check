@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { reportsAPI, disputesAPI } from '../../services/api';
+import { adminAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import { 
   FiAlertTriangle, 
@@ -35,8 +35,8 @@ const Reports = () => {
     try {
       setLoading(true);
       const params = statusFilter !== 'all' ? { status: statusFilter } : {};
-      const response = await reportsAPI.getAll(params);
-      setReports(response.data.data || []);
+      const response = await adminAPI.getReports(params);
+      setReports(response.data.data?.reports || []);
     } catch (error) {
       console.error('Failed to fetch reports:', error);
       toast.error('Failed to load reports');
@@ -49,8 +49,8 @@ const Reports = () => {
     try {
       setLoading(true);
       const params = statusFilter !== 'all' ? { status: statusFilter } : {};
-      const response = await disputesAPI.getAll(params);
-      setDisputes(response.data.data || []);
+      const response = await adminAPI.getDisputes(params);
+      setDisputes(response.data.data?.disputes || []);
     } catch (error) {
       console.error('Failed to fetch disputes:', error);
       toast.error('Failed to load disputes');
@@ -77,14 +77,14 @@ const Reports = () => {
     setActionLoading(true);
     try {
       if (activeTab === 'reports') {
-        await reportsAPI.resolve(selectedItem.id, { 
+        await adminAPI.resolveReport(selectedItem.id, { 
           status: action,
-          adminNote: actionNote 
+          adminNotes: actionNote 
         });
       } else {
-        await disputesAPI.resolve(selectedItem.id, { 
-          resolution: action,
-          adminNote: actionNote 
+        await adminAPI.resolveDispute(selectedItem.id, { 
+          status: action,
+          adminNotes: actionNote 
         });
       }
       

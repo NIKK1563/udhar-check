@@ -483,3 +483,270 @@ exports.createAdmin = async (req, res) => {
     });
   }
 };
+
+// Upload profile picture
+exports.uploadProfilePicture = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id);
+
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: 'Profile picture file is required'
+      });
+    }
+
+    // Validate file type
+    const allowedImageTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+    if (!allowedImageTypes.includes(req.file.mimetype)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Profile picture must be JPG or PNG format'
+      });
+    }
+
+    // Validate file size (5MB)
+    if (req.file.size > 5 * 1024 * 1024) {
+      return res.status(400).json({
+        success: false,
+        message: 'Profile picture file size must be less than 5MB'
+      });
+    }
+
+    // Update profile picture URL
+    user.profilePhoto = `/uploads/profiles/${req.file.filename}`;
+    await user.save();
+
+    // Log activity
+    await ActivityLog.create({
+      userId: user.id,
+      action: 'UPDATE_PROFILE_PICTURE',
+      description: 'User updated profile picture',
+      ipAddress: req.ip,
+      userAgent: req.get('User-Agent')
+    });
+
+    res.json({
+      success: true,
+      message: 'Profile picture updated successfully',
+      data: user.toJSON()
+    });
+  } catch (error) {
+    console.error('Upload profile picture error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to upload profile picture',
+      error: error.message
+    });
+  }
+};
+
+// Send email verification
+exports.sendEmailVerification = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id);
+
+    if (user.emailVerified) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email is already verified'
+      });
+    }
+
+    // Generate 6-digit verification code
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    
+    // Store verification code and expiry (15 minutes)
+    user.emailVerificationCode = verificationCode;
+    user.emailVerificationExpiry = new Date(Date.now() + 15 * 60 * 1000);
+    await user.save();
+
+    // TODO: In production, send actual email
+    // For now, just return the code (remove this in production)
+    console.log(`Email verification code for ${user.email}: ${verificationCode}`);
+
+    res.json({
+      success: true,
+      message: 'Verification code sent to your email',
+      // Remove this in production
+      ...(process.env.NODE_ENV === 'development' && { code: verificationCode })
+    });
+  } catch (error) {
+    console.error('Send email verification error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to send verification code',
+      error: error.message
+    });
+  }
+};
+
+// Verify email
+exports.verifyEmail = async (req, res) => {
+  try {
+    const { code } = req.body;
+    const user = await User.findByPk(req.user.id);
+
+    if (user.emailVerified) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email is already verified'
+      });
+    }
+
+    if (!user.emailVerificationCode || !user.emailVerificationExpiry) {
+      return res.status(400).json({
+        success: false,
+        message: 'No verification code found. Please request a new one.'
+      });
+    }
+
+    if (new Date() > user.emailVerificationExpiry) {
+      return res.status(400).json({
+        success: false,
+        message: 'Verification code has expired. Please request a new one.'
+      });
+    }
+
+    if (user.emailVerificationCode !== code) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid verification code'
+      });
+    }
+
+    // Mark email as verified
+    user.emailVerified = true;
+    user.emailVerificationCode = null;
+    user.emailVerificationExpiry = null;
+    await user.save();
+
+    // Log activity
+    await ActivityLog.create({
+      userId: user.id,
+      action: 'VERIFY_EMAIL',
+      description: 'User verified email address',
+      ipAddress: req.ip,
+      userAgent: req.get('User-Agent')
+    });
+
+    res.json({
+      success: true,
+      message: 'Email verified successfully',
+      data: user.toJSON()
+    });
+  } catch (error) {
+    console.error('Verify email error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to verify email',
+      error: error.message
+    });
+  }
+};
+
+// Send phone verification
+exports.sendPhoneVerification = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id);
+
+    if (user.phoneVerified) {
+      return res.status(400).json({
+        success: false,
+        message: 'Phone is already verified'
+      });
+    }
+
+    // Generate 6-digit verification code
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    
+    // Store verification code and expiry (15 minutes)
+    user.phoneVerificationCode = verificationCode;
+    user.phoneVerificationExpiry = new Date(Date.now() + 15 * 60 * 1000);
+    await user.save();
+
+    // TODO: In production, send actual SMS
+    // For now, just return the code (remove this in production)
+    console.log(`Phone verification code for ${user.phone}: ${verificationCode}`);
+
+    res.json({
+      success: true,
+      message: 'Verification code sent to your phone',
+      // Remove this in production
+      ...(process.env.NODE_ENV === 'development' && { code: verificationCode })
+    });
+  } catch (error) {
+    console.error('Send phone verification error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to send verification code',
+      error: error.message
+    });
+  }
+};
+
+// Verify phone
+exports.verifyPhone = async (req, res) => {
+  try {
+    const { code } = req.body;
+    const user = await User.findByPk(req.user.id);
+
+    if (user.phoneVerified) {
+      return res.status(400).json({
+        success: false,
+        message: 'Phone is already verified'
+      });
+    }
+
+    if (!user.phoneVerificationCode || !user.phoneVerificationExpiry) {
+      return res.status(400).json({
+        success: false,
+        message: 'No verification code found. Please request a new one.'
+      });
+    }
+
+    if (new Date() > user.phoneVerificationExpiry) {
+      return res.status(400).json({
+        success: false,
+        message: 'Verification code has expired. Please request a new one.'
+      });
+    }
+
+    if (user.phoneVerificationCode !== code) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid verification code'
+      });
+    }
+
+    // Mark phone as verified
+    user.phoneVerified = true;
+    user.phoneVerificationCode = null;
+    user.phoneVerificationExpiry = null;
+    await user.save();
+
+    // Log activity
+    await ActivityLog.create({
+      userId: user.id,
+      action: 'VERIFY_PHONE',
+      description: 'User verified phone number',
+      ipAddress: req.ip,
+      userAgent: req.get('User-Agent')
+    });
+
+    res.json({
+      success: true,
+      message: 'Phone verified successfully',
+      data: user.toJSON()
+    });
+  } catch (error) {
+    console.error('Verify phone error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to verify phone',
+      error: error.message
+    });
+  }
+};
+
+

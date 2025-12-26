@@ -84,6 +84,30 @@ const User = sequelize.define('User', {
     type: DataTypes.BOOLEAN,
     defaultValue: false
   },
+  emailVerified: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  phoneVerified: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  emailVerificationCode: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  emailVerificationExpiry: {
+    type: DataTypes.DATE,
+    allowNull: true
+  },
+  phoneVerificationCode: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  phoneVerificationExpiry: {
+    type: DataTypes.DATE,
+    allowNull: true
+  },
   isOnboardingComplete: {
     type: DataTypes.BOOLEAN,
     defaultValue: false

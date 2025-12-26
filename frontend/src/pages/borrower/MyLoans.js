@@ -32,10 +32,24 @@ const MyLoans = () => {
   const fetchLoans = async () => {
     try {
       const response = await loansAPI.getMyBorrowings();
-      setLoans(response.data.data || []);
+      
+      // Handle different response structures
+      let loansData = [];
+      if (response.data.data) {
+        if (Array.isArray(response.data.data)) {
+          loansData = response.data.data;
+        } else if (response.data.data.loans) {
+          loansData = response.data.data.loans;
+        } else if (response.data.data.requests) {
+          loansData = response.data.data.requests;
+        }
+      }
+      
+      setLoans(loansData);
     } catch (error) {
       console.error('Failed to fetch loans:', error);
       toast.error('Failed to load loans');
+      setLoans([]); // Set empty array on error
     } finally {
       setLoading(false);
     }
@@ -63,14 +77,14 @@ const MyLoans = () => {
     return badges[status] || { class: 'badge-gray', label: status, icon: null };
   };
 
-  const filteredLoans = loans.filter(loan => {
+  const filteredLoans = Array.isArray(loans) ? loans.filter(loan => {
     if (filter === 'all') return true;
     if (filter === 'active') return ['in_progress', 'accepted'].includes(loan.status);
     if (filter === 'pending') return loan.status === 'pending';
     if (filter === 'completed') return loan.status === 'completed';
     if (filter === 'overdue') return ['overdue', 'defaulted'].includes(loan.status);
     return true;
-  });
+  }) : [];
 
   const handleConfirmFulfillment = async (loanId) => {
     try {
