@@ -4,7 +4,6 @@ import { adminAPI, loansAPI, reportsAPI, disputesAPI } from '../../services/api'
 import { toast } from 'react-toastify';
 import { 
   FiUsers, 
-  FiDollarSign, 
   FiAlertTriangle, 
   FiFileText,
   FiTrendingUp,
@@ -220,7 +219,7 @@ const AdminDashboard = () => {
 
         <div className="stat-card">
           <div className="stat-icon success">
-            <FiDollarSign />
+            <FiTrendingUp />
           </div>
           <div className="stat-content">
             <h3>{formatCurrency(stats.totalLentAmount)}</h3>

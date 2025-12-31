@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { loansAPI } from '../../services/api';
-import { FiDollarSign } from 'react-icons/fi';
+import { FiCalendar, FiUser, FiClock } from 'react-icons/fi';
 
 const LenderHistory = () => {
   const [loans, setLoans] = useState([]);
@@ -161,7 +161,7 @@ const LenderHistory = () => {
       ) : (
         <div className="card">
           <div className="card-body empty-state">
-            <FiDollarSign size={48} className="empty-state-icon" />
+            <FiClock size={48} className="empty-state-icon" />
             <h3 className="empty-state-title">No Lending History</h3>
             <p className="empty-state-text">
               You haven't lent any money yet. Browse loan requests to start lending.

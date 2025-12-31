@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loansAPI } from '../../services/api';
 import { toast } from 'react-toastify';
-import { FiDollarSign, FiClock, FiFileText, FiArrowLeft } from 'react-icons/fi';
+import { FiCreditCard, FiClock, FiFileText, FiArrowLeft } from 'react-icons/fi';
 import './NewRequest.css';
 
 const NewRequest = () => {
@@ -84,7 +84,7 @@ const NewRequest = () => {
         <form onSubmit={handleSubmit} className="request-form">
           <div className="form-section">
             <h3 className="section-title">
-              <FiDollarSign /> Loan Details
+              <FiCreditCard /> Loan Details
             </h3>
 
             <div className="form-group">

@@ -5,11 +5,11 @@ import {
   FiBell, 
   FiCheck, 
   FiCheckCircle, 
-  FiDollarSign,
   FiAlertCircle,
   FiInfo,
   FiTrash2,
-  FiFilter
+  FiFilter,
+  FiCreditCard
 } from 'react-icons/fi';
 import './Notifications.css';
 
@@ -87,10 +87,10 @@ const Notifications = () => {
 
   const getNotificationIcon = (type) => {
     const icons = {
-      loan_request: FiDollarSign,
+      loan_request: FiCreditCard,
       loan_accepted: FiCheckCircle,
       loan_rejected: FiAlertCircle,
-      payment_received: FiDollarSign,
+      payment_received: FiCheckCircle,
       payment_due: FiAlertCircle,
       payment_overdue: FiAlertCircle,
       verification: FiCheckCircle,

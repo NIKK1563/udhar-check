@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import { loansAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import { 
-  FiDollarSign, 
   FiClock, 
   FiFilter, 
   FiPlus,
   FiAlertCircle,
-  FiCheck
+  FiCheck,
+  FiCreditCard
 } from 'react-icons/fi';
 import './MyLoans.css';
 
@@ -67,7 +67,7 @@ const MyLoans = () => {
     const badges = {
       pending: { class: 'badge-warning', label: 'Pending', icon: FiClock },
       accepted: { class: 'badge-info', label: 'Accepted', icon: FiCheck },
-      in_progress: { class: 'badge-primary', label: 'In Progress', icon: FiDollarSign },
+      in_progress: { class: 'badge-primary', label: 'In Progress', icon: FiCreditCard },
       completed: { class: 'badge-success', label: 'Completed', icon: FiCheck },
       overdue: { class: 'badge-danger', label: 'Overdue', icon: FiAlertCircle },
       defaulted: { class: 'badge-danger', label: 'Defaulted', icon: FiAlertCircle },
@@ -196,7 +196,7 @@ const MyLoans = () => {
       {filteredLoans.length === 0 ? (
         <div className="card">
           <div className="card-body empty-state">
-            <FiDollarSign size={48} />
+            <FiCreditCard size={48} />
             <h3>No loans found</h3>
             <p>
               {filter === 'all' 

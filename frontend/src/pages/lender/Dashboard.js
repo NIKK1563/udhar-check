@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { loansAPI } from '../../services/api';
-import { FiDollarSign, FiUsers, FiCheckCircle, FiClock, FiArrowRight } from 'react-icons/fi';
+import { FiUsers, FiCheckCircle, FiClock, FiArrowRight, FiTrendingUp } from 'react-icons/fi';
 import './Dashboard.css';
 
 const LenderDashboard = () => {
@@ -94,7 +94,7 @@ const LenderDashboard = () => {
       <div className="stats-grid">
         <div className="stat-card">
           <div className="stat-icon" style={{ background: 'rgba(79, 70, 229, 0.1)', color: 'var(--primary)' }}>
-            <FiDollarSign size={24} />
+            <FiTrendingUp size={24} />
           </div>
           <div className="stat-info">
             <p className="stat-value">{formatCurrency(stats.totalLent)}</p>
@@ -104,7 +104,7 @@ const LenderDashboard = () => {
 
         <div className="stat-card">
           <div className="stat-icon" style={{ background: 'rgba(16, 185, 129, 0.1)', color: 'var(--success)' }}>
-            <FiDollarSign size={24} />
+            <FiCheckCircle size={24} />
           </div>
           <div className="stat-info">
             <p className="stat-value">{formatCurrency(stats.availableBalance)}</p>
@@ -209,7 +209,7 @@ const LenderDashboard = () => {
               </div>
             ) : (
               <div className="empty-state">
-                <FiDollarSign size={32} className="empty-state-icon" />
+                <FiUsers size={32} className="empty-state-icon" />
                 <p className="empty-state-text">No lending history yet</p>
               </div>
             )}

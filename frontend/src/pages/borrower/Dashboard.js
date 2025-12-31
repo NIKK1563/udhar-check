@@ -4,14 +4,14 @@ import { useAuth } from '../../context/AuthContext';
 import { loansAPI, notificationsAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import { 
-  FiDollarSign, 
   FiTrendingUp, 
   FiClock, 
   FiCheckCircle,
   FiAlertCircle,
   FiPlus,
   FiBell,
-  FiArrowRight
+  FiArrowRight,
+  FiCreditCard
 } from 'react-icons/fi';
 import './Dashboard.css';
 
@@ -190,7 +190,7 @@ const BorrowerDashboard = () => {
       <div className="stats-grid">
         <div className="stat-card">
           <div className="stat-icon primary">
-            <FiDollarSign />
+            <FiTrendingUp />
           </div>
           <div className="stat-content">
             <h3>{formatCurrency(stats.totalBorrowed)}</h3>
@@ -254,7 +254,7 @@ const BorrowerDashboard = () => {
           <div className="card-body">
             {recentLoans.length === 0 ? (
               <div className="empty-state">
-                <FiDollarSign size={48} />
+                <FiCreditCard size={48} />
                 <h4>No loan activity yet</h4>
                 <p>Submit your first loan request to get started</p>
                 <button className="btn btn-primary" onClick={() => setShowRequestModal(true)}>
@@ -326,7 +326,7 @@ const BorrowerDashboard = () => {
             <div className="modal-header">
               <div className="modal-header-content">
                 <div className="modal-icon">
-                  <FiDollarSign size={24} />
+                  <FiCreditCard size={24} />
                 </div>
                 <div>
                   <h3 className="modal-title">Request Money</h3>

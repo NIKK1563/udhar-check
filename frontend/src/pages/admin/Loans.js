@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { adminAPI } from '../../services/api';
 import { toast } from 'react-toastify';
 import { 
-  FiDollarSign, 
   FiUser, 
   FiCalendar,
   FiClock,
@@ -52,7 +51,7 @@ const AdminLoans = () => {
     const badges = {
       pending: { class: 'badge-warning', label: 'Pending', icon: FiClock },
       accepted: { class: 'badge-info', label: 'Accepted', icon: FiCheckCircle },
-      in_progress: { class: 'badge-primary', label: 'In Progress', icon: FiDollarSign },
+      in_progress: { class: 'badge-primary', label: 'In Progress', icon: FiCheckCircle },
       completed: { class: 'badge-success', label: 'Completed', icon: FiCheckCircle },
       overdue: { class: 'badge-danger', label: 'Overdue', icon: FiAlertCircle },
       defaulted: { class: 'badge-danger', label: 'Defaulted', icon: FiAlertCircle },
@@ -83,7 +82,7 @@ const AdminLoans = () => {
             className={`tab ${statusFilter === 'all' ? 'active' : ''}`}
             onClick={() => setStatusFilter('all')}
           >
-            <FiDollarSign />
+            <FiEye />
             All Loans
           </button>
           <button 
@@ -127,7 +126,7 @@ const AdminLoans = () => {
           </div>
         ) : loans.length === 0 ? (
           <div className="empty-state">
-            <FiDollarSign size={48} />
+            <FiCheckCircle size={48} />
             <h3>No loans found</h3>
             <p>There are no {statusFilter !== 'all' ? statusFilter : ''} loans at this time.</p>
           </div>
@@ -147,7 +146,7 @@ const AdminLoans = () => {
 
                   <div className="item-body">
                     <div className="loan-amount-display">
-                      <FiDollarSign />
+                      <FiCheckCircle />
                       <span className="amount">{formatCurrency(loan.amount)}</span>
                       {loan.interestRate && (
                         <span className="interest">@ {loan.interestRate}% interest</span>
