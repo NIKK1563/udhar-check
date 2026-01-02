@@ -198,7 +198,7 @@
   gap: 0.5rem;
   font-size: 0.8125rem;
   color: var(--text-secondary);
-  margin-left: 15px;
+  margin-left: 1rem;
 }
 
 .user-info svg {
@@ -364,6 +364,7 @@
   color: var(--primary);
   font-size: 1.5rem;
   flex-shrink: 0;
+  display: none;
 }
 
 .loan-amount-display .amount {
@@ -499,6 +500,203 @@
   color: var(--danger);
 }
 
+/* Badge primary */
+.badge-primary {
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--primary);
+}
+
+/* Loading states */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--gray-light);
+  border-top: 3px solid var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.empty-state svg {
+  color: var(--text-light);
+  margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  font-size: 1.125rem;
+}
+
+.empty-state p {
+  color: var(--text-light);
+  font-size: 0.875rem;
+}
+
+/* Button variants */
+.btn-lg {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+}
+
+.btn-outline-danger {
+  background: transparent;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+}
+
+.btn-outline-danger:hover {
+  background: var(--danger);
+  color: var(--white);
+}
+
+.btn-outline-danger:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Ensure modal overlay prevents body scroll */
+body.modal-open {
+  overflow: hidden;
+}
+
+/* Responsive utilities */
+.text-center {
+  text-align: center;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.w-full {
+  width: 100%;
+}
+
+/* Improved focus styles for accessibility */
+.btn:focus,
+.tab:focus,
+.form-select:focus,
+.modal-close:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Better spacing for different screen sizes */
+@media (max-width: 1200px) {
+  .reports-page {
+    padding: 1rem;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+  .reports-page {
+    padding: 0.25rem;
+  }
+
+  .page-title {
+    font-size: 1rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .tabs {
+    padding: 0.25rem;
+  }
+
+  .tab {
+    padding: 0.625rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .type-badge,
+  .badge {
+    font-size: 0.6rem;
+    padding: 0.125rem 0.375rem;
+  }
+
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: 0.5rem;
+  }
+
+  .amount-value {
+    font-size: 1.25rem;
+  }
+
+  .type-value {
+    font-size: 0.75rem;
+  }
+
+  .person-avatar,
+  .user-initials {
+    width: 36px;
+    height: 36px;
+    font-size: 0.7rem;
+  }
+}
+
+/* Print styles */
+@media print {
+  .reports-page {
+    padding: 0;
+  }
+
+  .modal-overlay,
+  .btn,
+  .tab,
+  .filter-controls {
+    display: none !important;
+  }
+
+  .item-card {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #000;
+    margin-bottom: 1rem;
+  }
+}
+
+/* High DPI screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .spinner {
+    border-width: 2px;
+  }
+  
+  .btn,
+  .tab {
+    border-width: 1px;
+  }
+}
+
 .badge-primary {
   background: rgba(99, 102, 241, 0.1);
   color: var(--primary);
@@ -560,6 +758,9 @@
   justify-content: center;
   z-index: 1000;
   padding: 1rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .modal {
@@ -1146,6 +1347,24 @@
     font-size: 0.75rem;
   }
 
+  /* Hide avatars, emails, and phone numbers on mobile */
+  .user-avatar,
+  .user-initials {
+    display: none !important;
+  }
+
+  .user-email,
+  .user-phone {
+    display: none !important;
+  }
+
+  .user-card-content .user-email,
+  .user-card-content .user-phone,
+  .item-users .user-info .user-email,
+  .item-users .user-info .user-phone {
+    display: none !important;
+  }
+
   .evidence-section {
     margin-top: 0.875rem;
   }
@@ -1346,6 +1565,17 @@
   .user-card span {
     word-break: break-word;
   }
+
+  /* Additional mobile hiding for 480px screens */
+  .user-avatar,
+  .user-initials {
+    display: none !important;
+  }
+
+  .user-email,
+  .user-phone {
+    display: none !important;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1356,7 +1586,7 @@
   .page-title {
     font-size: 1.125rem;
   }
-
+}
   .tabs {
     gap: 0.25rem;
   }
@@ -1399,7 +1629,7 @@
 
   .evidence-img {
     height: 80px;
-  }
+}
 
   .btn {
     font-size: 0.75rem;
@@ -1417,6 +1647,7 @@
 
   .loan-amount-display .amount {
     font-size: 1.375rem;
+    margin-right: .5rem;;
   }
 
   .item-footer {
@@ -1429,7 +1660,7 @@
     margin: 0;
     border-radius: 8px;
   }
-}
+
 
 /* ===== REPORT DETAIL MODAL - Clean Design ===== */
 .report-detail-modal {
@@ -1548,7 +1779,7 @@
   padding: 1rem;
   background: var(--gray-light);
   border-radius: 8px;
-  border-left: 3px solid var(--warning);
+  border: 3px solid var(--warning);
   word-wrap: break-word;
 }
 
@@ -1560,6 +1791,8 @@
   background: rgba(16, 185, 129, 0.1);
   border-radius: 8px;
   display: inline-block;
+  width: 100%;
+  text-align: left;
 }
 
 .admin-note-input {
@@ -1588,6 +1821,25 @@
   margin-bottom: 1.25rem;
 }
 
+/* Ensure user cards are not affected by any status-based inheritance */
+.report-users-grid .user-card-content {
+  /* Reset any potential inherited styles */
+  border: 1px solid var(--border) !important;
+  background: white !important;
+  color: inherit !important;
+}
+
+/* Override with specific role-based styling */
+.report-users-grid .user-card-content.reporter {
+  background: rgba(99, 102, 241, 0.05) !important;
+  border-color: rgba(99, 102, 241, 0.2) !important;
+}
+
+.report-users-grid .user-card-content.reported {
+  background: rgba(239, 68, 68, 0.05) !important;
+  border-color: rgba(239, 68, 68, 0.2) !important;
+}
+
 .report-user-card .field-label {
   display: block;
   font-size: 0.7rem;
@@ -1605,16 +1857,21 @@
   padding: 0.875rem;
   border-radius: 10px;
   border: 1px solid var(--border);
+  background: white;
+  height: 96px; /* Fixed height */
+  min-height: 96px;
+  max-height: 96px;
+  overflow: hidden; /* Prevent content from expanding card */
 }
 
 .user-card-content.reporter {
-  background: rgba(99, 102, 241, 0.05);
-  border-color: rgba(99, 102, 241, 0.2);
+  background: rgba(99, 102, 241, 0.05) !important;
+  border-color: rgba(99, 102, 241, 0.2) !important;
 }
 
 .user-card-content.reported {
-  background: rgba(239, 68, 68, 0.05);
-  border-color: rgba(239, 68, 68, 0.2);
+  background: rgba(239, 68, 68, 0.05) !important;
+  border-color: rgba(239, 68, 68, 0.2) !important;
 }
 
 .user-initials {
@@ -1631,11 +1888,30 @@
 }
 
 .user-card-content.reporter .user-initials {
-  background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%) !important;
 }
 
 .user-card-content.reported .user-initials {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+}
+
+/* User card styling - isolated from status changes */
+.report-detail-modal .user-card-content.reporter {
+  background: rgba(99, 102, 241, 0.05) !important;
+  border-color: rgba(99, 102, 241, 0.2) !important;
+}
+
+.report-detail-modal .user-card-content.reported {
+  background: rgba(239, 68, 68, 0.05) !important;
+  border-color: rgba(239, 68, 68, 0.2) !important;
+}
+
+.report-detail-modal .user-card-content.reporter .user-initials {
+  background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%) !important;
+}
+
+.report-detail-modal .user-card-content.reported .user-initials {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
 }
 
 .user-card-content .user-info {
@@ -1644,18 +1920,24 @@
   gap: 0.125rem;
   min-width: 0;
   flex: 1;
+  overflow: hidden; /* Prevent text from expanding container */
 }
 
 .user-card-content .user-name {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary) !important;
+  white-space: nowrap; /* Keep text on single line */
+  overflow: hidden; /* Hide overflow text */
+  text-overflow: ellipsis; /* Show ellipsis for long text */
 }
 
 .user-card-content .user-email {
   font-size: 0.75rem;
-  color: var(--text-light);
-  word-break: break-all;
+  color: var(--text-light) !important;
+  white-space: nowrap; /* Keep text on single line */
+  overflow: hidden; /* Hide overflow text */
+  text-overflow: ellipsis; /* Show ellipsis for long text */
 }
 
 /* Button Outline Danger */
@@ -1736,3 +2018,1455 @@
   }
 }
 
+/* ============================================== */
+/* COMPREHENSIVE MOBILE RESPONSIVE STYLES        */
+/* ============================================== */
+
+/* Base mobile styles - prevent horizontal scroll */
+@media (max-width: 768px) {
+  /* Prevent horizontal overflow */
+  .reports-page {
+    padding: 1rem;
+    overflow-x: hidden;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Page Header - scaled for mobile */
+  .page-header {
+    margin-bottom: 1.25rem;
+  }
+
+  .page-title {
+    font-size: 1.375rem;
+    line-height: 1.3;
+    word-wrap: break-word;
+  }
+
+  .page-subtitle {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
+
+  /* Tabs container - full width stacking */
+  .tabs-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  /* Tabs - horizontal scroll with touch */
+  .tabs {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 0.2rem;
+  }
+
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tab {
+    flex: 1;
+    min-width: 0;
+    justify-content: center;
+    padding: 0.75rem 1rem;
+    font-size: 0.8125rem;
+    min-height: 44px; /* Touch-friendly */
+  }
+
+  .tab svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  /* Filter controls - full width */
+  .filter-controls {
+    width: 100%;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .form-select {
+    width: 100%;
+    min-height: 48px;
+    font-size: 16px; /* Prevents iOS zoom */
+    padding: 0.875rem 2.5rem 0.875rem 1rem;
+  }
+
+  /* Items list - better spacing */
+  .items-list {
+    padding: 0.75rem;
+    gap: 1rem;
+  }
+
+  /* Item cards - full width with proper spacing */
+  .item-card {
+    border-radius: 10px;
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+  }
+
+  .item-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.625rem;
+    padding: 1rem;
+  }
+
+  .item-type {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .type-badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.625rem;
+  }
+
+  .item-date {
+    font-size: 0.8125rem;
+    color: var(--text-light);
+  }
+
+  /* Item body - proper text wrapping */
+  .item-body {
+    padding: 1rem;
+  }
+
+  .item-description {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    margin-bottom: 1rem;
+  }
+
+  /* Item users - stacked layout */
+  .item-users {
+    flex-direction: column;
+    gap: 0.625rem;
+    margin-bottom: 1rem;
+  }
+
+  .user-info {
+    font-size: 0.8125rem;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .user-info svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  /* Item footer - full width buttons */
+  .item-footer {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+
+  .item-footer .btn {
+    width: 100%;
+    min-height: 44px;
+    justify-content: center;
+  }
+
+  /* Badges - properly sized */
+  .badge {
+    font-size: 0.6875rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  /* Empty state - centered and readable */
+  .empty-state {
+    padding: 2rem 1rem;
+    text-align: center;
+  }
+
+  .empty-state svg {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1rem;
+  }
+
+  .empty-state h3 {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .empty-state p {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+}
+
+/* ============================================== */
+/* REPORT DETAIL MODAL - MOBILE RESPONSIVE       */
+/* ============================================== */
+
+@media (max-width: 768px) {
+  /* Modal overlay - full screen on mobile */
+  .modal-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .report-detail-modal {
+    width: 100%;
+    max-width: 100%;
+    max-height: 92vh;
+    margin: 0;
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
+  }
+
+  /* Modal header - sticky with proper spacing */
+  .report-detail-modal .modal-header {
+    padding: 1rem 1rem;
+    position: sticky;
+    top: 0;
+    background: var(--white);
+    z-index: 10;
+  }
+
+  .report-detail-modal .modal-title {
+    font-size: 1.125rem;
+    line-height: 1.3;
+    word-wrap: break-word;
+    padding-right: 0.5rem;
+  }
+
+  /* Close button - larger touch target */
+  .report-detail-modal .modal-close {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    font-size: 1.75rem;
+    flex-shrink: 0;
+  }
+
+  /* Modal body - proper padding */
+  .report-detail-modal .modal-body {
+    padding: 1rem;
+    overflow-y: auto;
+    max-height: calc(92vh - 140px);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Report header row - stacked */
+  .report-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .report-type-box {
+    width: 100%;
+  }
+
+  .report-type-box .type-value {
+    font-size: 1.125rem;
+  }
+
+  .status-badge-lg {
+    align-self: flex-start;
+    font-size: 0.6875rem;
+    padding: 0.375rem 0.75rem;
+  }
+
+  /* Report field - full width with text wrapping */
+  .report-field {
+    margin-bottom: 1.25rem;
+  }
+
+  .report-field .field-label {
+    font-size: 0.6875rem;
+    margin-bottom: 0.375rem;
+  }
+
+  .report-field .field-value {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .report-field .field-value.description {
+    padding: 0.875rem;
+    max-width: 100%;
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+
+  /* Report users grid - single column */
+  .report-users-grid {
+    grid-template-columns: 1fr;
+    gap: 0.875rem;
+    margin-bottom: 1.25rem;
+  }
+
+  /* User cards - equal sizing */
+  .report-user-card {
+    width: 100%;
+  }
+
+  .user-card-content {
+    width: 100%;
+    height: auto;
+    min-height: 72px;
+    max-height: none;
+    padding: 0.875rem;
+    gap: 0.75rem;
+  }
+
+  .user-initials {
+    width: 44px;
+    height: 44px;
+    font-size: 0.9375rem;
+  }
+
+  .user-card-content .user-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .user-card-content .user-name {
+    font-size: 0.9375rem;
+    margin-bottom: 0.125rem;
+  }
+
+  .user-card-content .user-email {
+    font-size: 0.8125rem;
+  }
+
+  /* Modal footer - stacked buttons */
+  .report-detail-modal .modal-footer {
+    flex-direction: column;
+    gap: 0.625rem;
+    padding: 1rem;
+    position: sticky;
+    bottom: 0;
+    background: #fafafa;
+    border-top: 1px solid var(--border);
+  }
+
+  .report-detail-modal .modal-footer .btn {
+    width: 100%;
+    min-height: 48px;
+    font-size: 0.9375rem;
+    justify-content: center;
+  }
+
+  /* Admin note input - touch friendly */
+  .admin-note-input {
+    min-height: 100px;
+    font-size: 16px; /* Prevents iOS zoom */
+    padding: 1rem;
+  }
+}
+
+/* ============================================== */
+/* EXTRA SMALL SCREENS (320px - 480px)           */
+/* ============================================== */
+
+@media (max-width: 480px) {
+  /* Page container - minimal padding */
+  .reports-page {
+    padding: 0.75rem;
+  }
+
+  /* Page header - smaller text */
+  .page-header {
+    margin-bottom: 1rem;
+  }
+
+  .page-title {
+    font-size: 1.25rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.75rem;
+  }
+
+  /* Tabs - compact */
+  .tabs-container {
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .tab {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.75rem;
+    min-height: 44px;
+  }
+
+  .tab svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .tab-badge {
+    min-width: 16px;
+    height: 16px;
+    font-size: 0.625rem;
+    padding: 0 0.25rem;
+  }
+
+  /* Item cards - tighter spacing */
+  .items-list {
+    padding: 0.5rem;
+    gap: 0.75rem;
+  }
+
+  .item-card {
+    border-radius: 8px;
+  }
+
+  .item-header {
+    padding: 0.875rem;
+    gap: 0.5rem;
+  }
+
+  .type-badge {
+    font-size: 0.6875rem;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .item-date {
+    font-size: 0.75rem;
+  }
+
+  .item-body {
+    padding: 0.875rem;
+  }
+
+  .item-description {
+    font-size: 0.8125rem;
+    margin-bottom: 0.875rem;
+  }
+
+  .item-users {
+    gap: 0.5rem;
+    margin-bottom: 0.875rem;
+  }
+
+  .user-info {
+    font-size: 0.75rem;
+    margin-left: 0.8rem;
+  }
+
+  .item-footer {
+    padding: 0.875rem;
+    gap: 0.5rem;
+  }
+
+  /* Report detail modal - bottom sheet */
+  .report-detail-modal {
+    max-height: 95vh;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .report-detail-modal .modal-header {
+    padding: 0.875rem 1rem;
+  }
+
+  .report-detail-modal .modal-title {
+    font-size: 1rem;
+  }
+
+  .report-detail-modal .modal-close {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    font-size: 1.5rem;
+  }
+
+  .report-detail-modal .modal-body {
+    padding: 0.875rem;
+    max-height: calc(95vh - 130px);
+  }
+
+  .report-header-row {
+    padding: 0.875rem;
+    margin-bottom: 1rem;
+    gap: 0.625rem;
+  }
+
+  .report-type-box .type-label {
+    font-size: 0.625rem;
+  }
+
+  .report-type-box .type-value {
+    font-size: 1rem;
+  }
+
+  .status-badge-lg {
+    font-size: 0.625rem;
+    padding: 0.3rem 0.625rem;
+  }
+
+  .report-field {
+    margin-bottom: 1rem;
+  }
+
+  .report-field .field-label {
+    font-size: 0.625rem;
+  }
+
+  .report-field .field-value {
+    font-size: 0.8125rem;
+  }
+
+  .report-field .field-value.description {
+    padding: 0.75rem;
+    font-size: 0.8125rem;
+  }
+
+  .report-users-grid {
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .user-card-content {
+    padding: 0.75rem;
+    min-height: 64px;
+    gap: 0.625rem;
+  }
+
+  .user-initials {
+    width: 40px;
+    height: 40px;
+    font-size: 0.875rem;
+  }
+
+  .user-card-content .user-name {
+    font-size: 0.875rem;
+  }
+
+  .user-card-content .user-email {
+    font-size: 0.75rem;
+  }
+
+  .report-detail-modal .modal-footer {
+    padding: 0.875rem;
+    gap: 0.5rem;
+  }
+
+  .report-detail-modal .modal-footer .btn {
+    min-height: 44px;
+    font-size: 0.875rem;
+  }
+
+  .admin-note-input {
+    min-height: 80px;
+    padding: 0.875rem;
+    font-size: 16px;
+  }
+}
+
+/* ============================================== */
+/* MOBILE RESPONSIVE STYLES                      */
+/* ============================================== */
+
+/* Tablet Styles */
+@media (max-width: 1024px) {
+  .tabs-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .tabs {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .filter-controls {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .form-select {
+    min-width: 200px;
+  }
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .reports-page {
+    padding: 0.75rem;
+  }
+
+  .page-header {
+    margin-bottom: 1rem;
+  }
+
+  .page-title {
+    font-size: 1.25rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.8125rem;
+  }
+
+  /* Tabs responsive */
+  .tabs {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem;
+  }
+
+  .tab {
+    padding: 0.875rem 1rem;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    min-height: 44px;
+    position: relative;
+  }
+
+  .tab-badge {
+    position: static;
+    margin-left: auto;
+  }
+
+  .filter-controls {
+    width: 100%;
+  }
+
+  .form-select {
+    width: 100%;
+    min-width: unset;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  /* Items list responsive */
+  .items-list {
+    padding: 0.75rem;
+  }
+
+  .item-card {
+    margin-bottom: 1rem;
+  }
+
+  .item-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.75rem;
+  }
+
+  .item-type {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .item-date {
+    font-size: 0.75rem;
+  }
+
+  .item-body {
+    padding: 0.75rem;
+  }
+
+  .item-users {
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .user-info {
+    margin-left: 0;
+    font-size: 0.8125rem;
+  }
+
+  .item-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem;
+  }
+
+  .btn {
+    width: 100%;
+    min-height: 44px;
+    justify-content: center;
+  }
+
+  /* Loan amount display responsive */
+  .loan-amount-display {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+    gap: 0.5rem;
+  }
+
+  .loan-amount-display .amount {
+    font-size: 1.5rem;
+  }
+
+  .loan-amount-display .interest {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  /* Loan meta responsive */
+  .loan-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .item-footer {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+
+  .item-footer .btn {
+    width: 100%;
+  }
+
+  /* Evidence files responsive */
+  .evidence-files {
+    flex-direction: column;
+  }
+
+  .evidence-files a {
+    text-align: center;
+    padding: 0.75rem;
+  }
+}
+
+/* Small Mobile Styles */
+@media (max-width: 480px) {
+  .reports-page {
+    padding: 0.5rem;
+  }
+
+  .page-title {
+    font-size: 1.125rem;
+  }
+
+  .tabs {
+    padding: 0.5rem;
+  }
+
+  .tab {
+    padding: 0.75rem;
+    font-size: 0.8125rem;
+  }
+
+  .items-list {
+    padding: 0.5rem;
+  }
+
+  .item-header,
+  .item-body,
+  .item-actions {
+    padding: 0.5rem;
+  }
+
+  .type-badge {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+  }
+
+  .badge {
+    padding: 0.1875rem 0.5rem;
+    font-size: 0.65rem;
+  }
+
+  .loan-amount-display .amount {
+    font-size: 1.25rem;
+  }
+}
+
+/* ============================================== */
+/* MODAL RESPONSIVE STYLES                       */
+/* ============================================== */
+
+/* Base modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+}
+
+.loan-detail-modal,
+.report-detail-modal {
+  background: var(--white);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--white);
+  z-index: 10;
+}
+
+.modal-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-light);
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+  min-height: 44px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  background: var(--gray-light);
+  color: var(--text-primary);
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--border);
+  position: sticky;
+  bottom: 0;
+  background: var(--white);
+  z-index: 10;
+}
+
+/* Loan Details Modal Specific Styles */
+.loan-header-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+  border-radius: 8px;
+}
+
+.loan-amount-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.amount-label {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.amount-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.status-badge-large {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+.loan-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.detail-box {
+  padding: 1rem;
+  background: var(--gray-light);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.detail-label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-light);
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.detail-value {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.people-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.person-section {
+  
+}
+
+.person-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.person-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--gray-light);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.person-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--white);
+  flex-shrink: 0;
+}
+
+.person-avatar.borrower {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.person-avatar.lender {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.person-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.person-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.person-email,
+.person-phone {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  word-break: break-all;
+}
+
+.loan-id-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--gray-light);
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.id-label {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  text-transform: uppercase;
+}
+
+.id-value {
+  font-family: monospace;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.description-section {
+  margin-bottom: 1.5rem;
+}
+
+.description-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.description-text {
+  color: var(--text-secondary);
+  line-height: 1.5;
+  padding: 1rem;
+  background: var(--gray-light);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+/* Report Details Modal Specific Styles */
+.report-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(245, 158, 11, 0.05) 100%);
+  border-radius: 8px;
+}
+
+.report-type-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.type-label {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.type-value {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--danger);
+  line-height: 1;
+}
+
+.status-badge-lg {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+.report-field {
+  margin-bottom: 1.5rem;
+}
+
+.field-label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-light);
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.field-value {
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.field-value.description {
+  padding: 1rem;
+  background: var(--gray-light);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.report-users-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.report-user-card {
+  
+}
+
+.user-card-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--gray-light);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.user-card-content.reporter .user-initials {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.user-card-content.reported .user-initials {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.user-initials {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--white);
+  flex-shrink: 0;
+}
+
+.admin-note-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.admin-note-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* Additional Report Modal Styles */
+.loan-info-box {
+  padding: 1rem;
+  background: var(--gray-light);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.loan-info-box .loan-amount-display {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.loan-purpose,
+.loan-id {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.loan-id {
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: var(--text-light);
+}
+
+.evidence-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+
+.evidence-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--gray-light);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--primary);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.evidence-link:hover {
+  background: rgba(99, 102, 241, 0.1);
+  border-color: var(--primary);
+}
+
+.report-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 0.75rem;
+}
+
+.admin-note-display {
+  padding: 1rem;
+  background: rgba(99, 102, 241, 0.05);
+  border-radius: 8px;
+  border-left: 4px solid var(--primary);
+}
+
+.admin-note-display p {
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Mobile adjustments for new elements */
+@media (max-width: 768px) {
+  .evidence-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .evidence-link {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .report-details-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .loan-info-box .loan-amount-display {
+    font-size: 1.125rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .loan-info-box {
+    padding: 0.75rem;
+  }
+
+  .evidence-link {
+    padding: 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .admin-note-display {
+    padding: 0.75rem;
+  }
+}
+
+/* Mobile Responsive Modal Styles */
+@media (max-width: 768px) {
+  .modal-overlay {
+    padding: 0.5rem;
+    align-items: flex-end;
+  }
+
+  .loan-detail-modal,
+  .report-detail-modal {
+    max-height: 95vh;
+    max-width: 100%;
+    margin: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .modal-header {
+    padding: 1rem;
+    position: sticky;
+    top: 0;
+  }
+
+  .modal-title {
+    font-size: 1rem;
+  }
+
+  .modal-body {
+    padding: 1rem;
+  }
+
+  .modal-footer {
+    padding: 1rem;
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+  }
+
+  .modal-footer .btn {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  /* Loan modal mobile adjustments */
+  .loan-header-section {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .amount-value {
+    font-size: 1.75rem;
+  }
+
+  .loan-details-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .people-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .person-card {
+    padding: 0.75rem;
+  }
+
+  .loan-id-section {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
+  /* Report modal mobile adjustments */
+  .report-header-row {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .type-value {
+    font-size: 1rem;
+  }
+
+  .report-users-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .user-card-content {
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-overlay {
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .loan-detail-modal,
+  .report-detail-modal {
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: 0.75rem;
+  }
+
+  .loan-header-section,
+  .report-header-row {
+    padding: 0.75rem;
+  }
+
+  .amount-value {
+    font-size: 1.5rem;
+  }
+
+  .type-value {
+    font-size: 0.875rem;
+  }
+
+  .detail-box,
+  .person-card,
+  .user-card-content {
+    padding: 0.75rem;
+  }
+
+  .person-avatar,
+  .user-initials {
+    width: 40px;
+    height: 40px;
+    font-size: 0.75rem;
+  }
+}
+
+/* ============================================== */
+/* TOUCH DEVICE OPTIMIZATIONS                    */
+/* ============================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  /* Ensure all interactive elements are touch-friendly */
+  .btn,
+  .tab,
+  .form-select,
+  .modal-close,
+  .item-footer .btn {
+    min-height: 44px;
+  }
+
+  /* Remove hover effects that don't work on touch */
+  .item-card:hover {
+    box-shadow: none;
+  }
+
+  /* Add active states for touch feedback */
+  .btn:active,
+  .tab:active {
+    opacity: 0.8;
+    transform: scale(0.98);
+  }
+
+  .item-card:active {
+    background: var(--gray-light);
+  }
+
+  .modal-close:active {
+    background: var(--gray-light);
+    opacity: 0.8;
+  }
+}

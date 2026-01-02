@@ -190,7 +190,7 @@
   background: var(--gray-50);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
-  border: 2px solid var(--gray-200);
+  /* border: 2px solid var(--gray-200); */
 }
 
 .section-header {

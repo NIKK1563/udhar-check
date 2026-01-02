@@ -786,7 +786,7 @@
 
 .score-card .score-name {
   font-size: 0.65rem;
-  color: var(--text-light);
+  color: var#f59e0b(--text-light);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }

@@ -291,8 +291,12 @@ const Reports = () => {
               {/* Status & Type Header */}
               <div className="report-header-row">
                 <div className="report-type-box">
-                  <span className="type-label">{activeTab === 'reports' ? 'Type' : 'Type'}</span>
-                  <span className="type-value">{selectedItem.reportType || selectedItem.disputeType || 'General'}</span>
+                  <span className="type-label">
+                    {activeTab === 'reports' ? 'Report Type' : 'Dispute Type'}
+                  </span>
+                  <span className="type-value">
+                    {selectedItem.reportType || selectedItem.disputeType || 'General'}
+                  </span>
                 </div>
                 <span className={`status-badge-lg ${getStatusBadge(selectedItem.status).class}`}>
                   {getStatusBadge(selectedItem.status).label}
@@ -302,7 +306,9 @@ const Reports = () => {
               {/* Description */}
               <div className="report-field">
                 <label className="field-label">Description</label>
-                <p className="field-value description">{selectedItem.description || selectedItem.reason}</p>
+                <p className="field-value description">
+                  {selectedItem.description || selectedItem.reason || 'No description provided'}
+                </p>
               </div>
 
               {/* Users Grid */}
@@ -311,13 +317,16 @@ const Reports = () => {
                   <label className="field-label">Reporter</label>
                   <div className="user-card-content reporter">
                     <div className="user-initials">
-                      {selectedItem.reporter?.firstName?.[0]}{selectedItem.reporter?.lastName?.[0]}
+                      {selectedItem.reporter?.firstName?.[0] || 'U'}{selectedItem.reporter?.lastName?.[0] || 'U'}
                     </div>
                     <div className="user-info">
                       <span className="user-name">
-                        {selectedItem.reporter?.firstName} {selectedItem.reporter?.lastName}
+                        {selectedItem.reporter?.firstName || 'Unknown'} {selectedItem.reporter?.lastName || 'User'}
                       </span>
-                      <span className="user-email">{selectedItem.reporter?.email}</span>
+                      <span className="user-email">{selectedItem.reporter?.email || 'No email provided'}</span>
+                      {selectedItem.reporter?.phone && (
+                        <span className="user-phone">{selectedItem.reporter.phone}</span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -327,13 +336,16 @@ const Reports = () => {
                     <label className="field-label">Reported User</label>
                     <div className="user-card-content reported">
                       <div className="user-initials">
-                        {selectedItem.reportedUser?.firstName?.[0]}{selectedItem.reportedUser?.lastName?.[0]}
+                        {selectedItem.reportedUser?.firstName?.[0] || 'U'}{selectedItem.reportedUser?.lastName?.[0] || 'U'}
                       </div>
                       <div className="user-info">
                         <span className="user-name">
-                          {selectedItem.reportedUser?.firstName} {selectedItem.reportedUser?.lastName}
+                          {selectedItem.reportedUser?.firstName || 'Unknown'} {selectedItem.reportedUser?.lastName || 'User'}
                         </span>
-                        <span className="user-email">{selectedItem.reportedUser?.email}</span>
+                        <span className="user-email">{selectedItem.reportedUser?.email || 'No email provided'}</span>
+                        {selectedItem.reportedUser?.phone && (
+                          <span className="user-phone">{selectedItem.reportedUser.phone}</span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -344,11 +356,81 @@ const Reports = () => {
               {selectedItem.loan && (
                 <div className="report-field">
                   <label className="field-label">Related Loan</label>
-                  <div className="loan-amount-display">₹{selectedItem.loan.amount?.toLocaleString()}</div>
+                  <div className="loan-info-box">
+                    <div className="loan-amount-display">₹{selectedItem.loan.amount?.toLocaleString()}</div>
+                    {selectedItem.loan.purpose && (
+                      <div className="loan-purpose">Purpose: {selectedItem.loan.purpose}</div>
+                    )}
+                    {selectedItem.loan.id && (
+                      <div className="loan-id">Loan ID: {selectedItem.loan.id}</div>
+                    )}
+                  </div>
                 </div>
               )}
 
-              {/* Admin Note */}
+              {/* Evidence Section */}
+              {selectedItem.evidence && selectedItem.evidence.length > 0 && (
+                <div className="report-field">
+                  <label className="field-label">Evidence Files</label>
+                  <div className="evidence-grid">
+                    {selectedItem.evidence.map((file, idx) => (
+                      <a 
+                        key={idx} 
+                        href={`http://localhost:5000${file}`} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="evidence-link"
+                      >
+                        <FiFileText />
+                        View Evidence {idx + 1}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Date Information */}
+              <div className="report-field">
+                <label className="field-label">Report Details</label>
+                <div className="report-details-grid">
+                  <div className="detail-box">
+                    <span className="detail-label">Submitted</span>
+                    <span className="detail-value">
+                      {new Date(selectedItem.createdAt).toLocaleDateString()} at{' '}
+                      {new Date(selectedItem.createdAt).toLocaleTimeString()}
+                    </span>
+                  </div>
+                  {selectedItem.updatedAt && selectedItem.updatedAt !== selectedItem.createdAt && (
+                    <div className="detail-box">
+                      <span className="detail-label">Last Updated</span>
+                      <span className="detail-value">
+                        {new Date(selectedItem.updatedAt).toLocaleDateString()} at{' '}
+                        {new Date(selectedItem.updatedAt).toLocaleTimeString()}
+                      </span>
+                    </div>
+                  )}
+                  {selectedItem.id && (
+                    <div className="detail-box">
+                      <span className="detail-label">
+                        {activeTab === 'reports' ? 'Report' : 'Dispute'} ID
+                      </span>
+                      <span className="detail-value id-value">{selectedItem.id}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Existing Admin Note Display */}
+              {selectedItem.adminNote && selectedItem.adminNote.trim() && (
+                <div className="report-field">
+                  <label className="field-label">Admin Note</label>
+                  <div className="admin-note-display">
+                    <p>{selectedItem.adminNote}</p>
+                  </div>
+                </div>
+              )}
+
+              {/* Admin Note Input for pending items */}
               {(selectedItem.status === 'pending' || selectedItem.status === 'open') && (
                 <div className="report-field">
                   <label className="field-label">Admin Note (Optional)</label>
@@ -381,7 +463,16 @@ const Reports = () => {
                     onClick={() => handleResolve('resolved')}
                     disabled={actionLoading}
                   >
-                    {actionLoading ? <span className="spinner"></span> : <><FiCheck /> Resolve</>}
+                    {actionLoading ? (
+                      <>
+                        <span className="spinner"></span>
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        <FiCheck /> Resolve
+                      </>
+                    )}
                   </button>
                 </>
               )}
